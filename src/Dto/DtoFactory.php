@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Validator;
+namespace App\Dto;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class DtoValidator
+class DtoFactory
 {
     public function __construct(
         private readonly ValidatorInterface $validator,
@@ -16,9 +16,8 @@ class DtoValidator
     {
     }
 
-    public function createFromRequest(Request $request, string $dtoClass): object
+    public function createFromData(array $data, string $dtoClass): object
     {
-        $data = $request->toArray();
         return $this->serializer->deserialize(json_encode($data), $dtoClass, 'json');
     }
 

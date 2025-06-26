@@ -3,10 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\ReviewRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ReviewRepository::class)]
+#[ORM\Table(name: "reviews")]
+#[ORM\HasLifecycleCallbacks]
 class Review
 {
     #[ORM\Id]
@@ -17,8 +18,18 @@ class Review
     #[ORM\Column(length: 32)]
     private ?string $username = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(length: 1024)]
     private ?string $review_text = null;
+
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
+    private ?float $rating = null;
+
+    #[ORM\Column]
+    private ?int $episode_id = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $created_at;
+
 
     public function getId(): ?int
     {
@@ -54,5 +65,47 @@ class Review
         $this->review_text = $review_text;
 
         return $this;
+    }
+
+    public function getRating(): ?float
+    {
+        return round($this->rating, 2);
+    }
+
+    public function setRating(float $rating): static
+    {
+        $this->rating = $rating;
+
+        return $this;
+    }
+
+    public function getEpisodeId(): ?int
+    {
+        return $this->episode_id;
+    }
+
+    public function setEpisodeId(int $episode_id): static
+    {
+        $this->episode_id = $episode_id;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $created_at): static
+    {
+        $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        $this->created_at = new \DateTimeImmutable();
     }
 }

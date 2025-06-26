@@ -2,21 +2,31 @@
 
 namespace App\Validator;
 
-use Symfony\Component\Validator\Constraint;
 
-#[\Attribute]
-class EpisodeExists extends Constraint
+use App\Service\RickAndMortyService;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidator;
+
+
+class EpisodeExistsValidator extends ConstraintValidator
 {
 
-    public function __construct(mixed $options = null, ?array $groups = null, mixed $payload = null)
+    public function __construct(
+        private readonly RickAndMortyService $rickAndMortyService
+    )
     {
-        parent::__construct($options, $groups, $payload);
     }
 
-
-    public function validatedBy(): string
+    public function validate(mixed $value, Constraint $constraint)
     {
-        return static::class . 'Validator';
+        if (!is_int($value)) return;
+        $episodeInfo = $this->rickAndMortyService->getEpisodeById($value);
+
+        if (!$episodeInfo) {
+            $this->context->buildViolation($constraint->message)
+                ->setParameter('{{ string }}', $value)
+                ->addViolation();
+        }
     }
 
 }

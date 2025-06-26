@@ -2,38 +2,32 @@
 
 namespace App\Service;
 
-use App\Dto\CreateReviewDto;
 use App\Repository\ReviewRepository;
-use Sentiment\Analyzer;
-use Symfony\Component\Serializer\SerializerInterface;
 
-class ReviewService
+class EpisodeService
 {
-    private Analyzer $sentimentAnalyzer;
+
     public function __construct(
         private readonly ReviewRepository $reviewRepository,
-        private readonly SerializerInterface $serializer
+        private readonly RickAndMortyService $rickAndMortyService
     )
     {
-        $this->sentimentAnalyzer = new Analyzer();
     }
 
-    public function addReview(CreateReviewDto $createReviewDto): array
+    public function getEpisodeDescription(int $episodeId): array
     {
-        $reviewTextRating = $this->sentimentAnalyzer->getSentiment($createReviewDto->getReviewText());
-        $reviewTextRating = ($reviewTextRating['compound'] + 1) / 2; // convert rating scale from "-1 to 1" to "0 to 1"
+        $episode = $this->rickAndMortyService->getEpisodeById($episodeId);
+        if (!$episode) return ['status' => 'error', 'code' => 404, 'message' => 'This episode does not exist!'];
 
+        $avgRating = round($this->reviewRepository->getAverageRatingOfEpisode($episodeId), 2);
+        $lastReviews = $this->reviewRepository->getReviewsByEpisode($episodeId);
 
-        $createReviewDto->setRating($reviewTextRating);
-        $reviewEntity = $this->reviewRepository->createReview($createReviewDto);
-        if (!$reviewEntity) return ['status' => 'error', 'code' => 500, 'message' => 'Failed to create a review due to an internal server error'];
-
-        return [
-            'status' => 'success',
-            'code' => 201,
-            'data' => $this->serializer->normalize($reviewEntity)
+        $data = [
+            'id' => $episode['id'], 'name' => $episode['name'], 'air_date' => $episode['air_date'],
+            'average_rating' => $avgRating, 'last_reviews' => $lastReviews
         ];
 
+        return ['status' => 'success', 'code' => 200, 'data' => $data];
     }
 
 }
