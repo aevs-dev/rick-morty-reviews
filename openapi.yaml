@@ -1,0 +1,143 @@
+openapi: 3.0.4
+info:
+  title: "Рик и Морти: Отзывы"
+  termsOfService: https://swagger.io/terms/
+  contact:
+    email: evseev.tolvlad@yandex.ru
+  version: 1.0.0
+tags:
+  - name: reviews
+    description: Everything about your Reviews
+  - name: episodes
+    description: Everything about your Episodes
+paths:
+  /api/v1/review:
+    post:
+      tags:
+        - reviews
+      summary: Создать отзыв на эпизод
+      description: Создать отзыв на эпизод
+      operationId: createReview
+      requestBody:
+        description: Создать отзыв на эпизод
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateReview'
+        required: true
+      responses:
+        '200':
+          description: Успешное создание отзыва
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReviewResponse'
+
+  /api/v1/episode/{episode_id}:
+    get:
+      tags:
+        - episodes
+      summary: Получить инфо об эпизоде
+      description: Получить инфо об эпизоде
+      operationId: getEpisode
+      parameters:
+        - name: episode_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID эпизода
+      responses:
+        '200':
+          description: Успешный запрос информации об эпизоде
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EpisodeResponse'
+
+components:
+  schemas:
+    CreateReview:
+      required:
+        - username
+        - episode_id
+        - review_text
+      type: object
+      properties:
+        username:
+          type: string
+          example: Alex
+        episode_id:
+          type: integer
+          example: 10
+        review_text:
+          type: string
+          example: 'Bad film..'
+
+    ReviewResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 21
+        username:
+          type: string
+          example: David
+        review_text:
+          type: string
+          example: I don't know. I like it)
+        rating:
+          type: number
+          format: float
+          example: 0.44
+        episodeId:
+          type: integer
+          example: 3
+        created_at:
+          type: string
+          format: date-time
+          example: "2025-06-27T00:13:05+04:00"
+
+    EpisodeResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 20
+        name:
+          type: string
+          example: Look Who's Purging Now
+        air_date:
+          type: string
+          example: September 27, 2015
+        average_rating:
+          type: number
+          format: float
+          example: 0.52
+        last_reviews:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReviewItem'
+
+    ReviewItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 20
+        username:
+          type: string
+          example: Aleg
+        review_text:
+          type: string
+          example: Hate all
+        rating:
+          type: string
+          example: "0.21"
+        episode_id:
+          type: integer
+          example: 20
+        created_at:
+          type: string
+          format: date-time
+          example: "2025-06-26T21:36:25+04:00"

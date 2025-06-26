@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ReviewRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 #[ORM\Entity(repositoryClass: ReviewRepository::class)]
 #[ORM\Table(name: "reviews")]
@@ -55,6 +56,7 @@ class Review
         return $this;
     }
 
+    #[SerializedName('review_text')]
     public function getReviewText(): ?string
     {
         return $this->review_text;
@@ -91,6 +93,7 @@ class Review
         return $this;
     }
 
+    #[SerializedName('created_at')]
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->created_at;
