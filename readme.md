@@ -12,6 +12,6 @@
 
 
 <h2>Примечания</h2>
- - Доступные методы можно просмотреть в openapi.yaml (Swagger)
- - episode_id в запросах берется из <a href="https://rickandmortyapi.com/documentation/#episode-schema">открытого API</a>
- - Анализатор тональности работает с английским текстом
+ - Доступные методы можно просмотреть в openapi.yaml (Swagger) <br>
+ - episode_id в запросах берется из <a href="https://rickandmortyapi.com/documentation/#episode-schema">открытого API</a> <br>
+ - Анализатор тональности работает с английским текстом <br>
