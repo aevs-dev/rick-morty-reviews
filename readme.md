@@ -8,7 +8,7 @@
 <i>P.S: Следует подождать пока в сервисе "php" выполнится
 установка пакетов через Composer,
 а также выполнятся миграции. Первые несколько секунд Nginx может возвращать ошибку 502 (Bad Gateway). Отследить состояние контейнера Symfony-приложения можно
-через <code>docker compose logs php</code> либо прописав во втором пункте <code>docker compose up</code> <br> вместо <code>docker compose up -d</code>
+через <code>docker compose logs php</code> либо прописав во втором пункте <code>docker compose up</code> вместо <code>docker compose up -d</code>
 </i>
 
 
