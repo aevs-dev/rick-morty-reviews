@@ -118,7 +118,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ReviewItem'
-          example:  # Пример массива с 3 отзывами (как в твоем JSON)
+          example: 
             - id: 20
               username: Aleg
               review_text: Hate all
@@ -151,7 +151,7 @@ components:
           type: string
           example: Hate all
         rating:
-          type: string  # Обрати внимание: в GET-ответе rating — строка!
+          type: string  
           example: "0.21"
         episode_id:
           type: integer
