@@ -90,7 +90,7 @@ components:
           type: number
           format: float
           example: 0.44
-        episodeId:
+        episode_id:
           type: integer
           example: 3
         created_at:
@@ -118,6 +118,25 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ReviewItem'
+          example:  # Пример массива с 3 отзывами (как в твоем JSON)
+            - id: 20
+              username: Aleg
+              review_text: Hate all
+              rating: "0.21"
+              episode_id: 20
+              created_at: "2025-06-26T21:36:25+04:00"
+            - id: 19
+              username: Aleg
+              review_text: I love it!!!!!!!Huh
+              rating: "0.87"
+              episode_id: 20
+              created_at: "2025-06-26T21:36:18+04:00"
+            - id: 18
+              username: Aleg
+              review_text: I love it
+              rating: "0.82"
+              episode_id: 20
+              created_at: "2025-06-26T21:36:15+04:00"
 
     ReviewItem:
       type: object
@@ -132,7 +151,7 @@ components:
           type: string
           example: Hate all
         rating:
-          type: string
+          type: string  # Обрати внимание: в GET-ответе rating — строка!
           example: "0.21"
         episode_id:
           type: integer
